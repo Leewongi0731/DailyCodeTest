@@ -2,7 +2,7 @@
 
 def cal(i, j):
     return (i//3)*3 + (j//3)
-
+ 
 def sol(n): # 0 <= n <= 80
     if n == 81: # 초과 index -> 앞에 모든 값이 True.
         for s in sudoku:
