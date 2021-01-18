@@ -1,5 +1,5 @@
 # 20414번: MVP 다이아몬드 (Normal)
-N = int(input())
+N = int(input()) 
 s, g, p, d = list(map(int, input().split()))
 rank = input()
 
