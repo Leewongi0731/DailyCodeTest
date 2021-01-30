@@ -2,46 +2,29 @@
 import sys
 
 N = int(input())
-dp = [ [ [0,-1,-1] for i in range(N)] for j in range(N) ]
+dp = [[0] * N for i in range(N)]
 datas = list(map(int, sys.stdin.readline().split()))
-M = int(input())
-for _ in range(M):
-    # 시간 제한이 빡세서, 일반 input()으로 받으면 시간초과됨..
-    S, E = list(map(int, sys.stdin.readline().split()))
-    S -= 1
-    E -= 1
-    
-    if S == E:
-        print(1)
-        continue
-    
-    if ( E - S ) % 2 == 1:
-        s = ( E + S ) // 2
-        e = s + 1
-    else:
-        s = ( E + S ) // 2
-        e = s
-    
-    if dp[s][e][0] == 1: # 가운데 시작지점에서, 최대 확인된 팰린드롬 까지 시작점 이동
-        ss = dp[s][e][1]
-        ee = dp[s][e][2]
-    else:
-        ss = s
-        ee = e
-        
-    palindrome = True
-    for i in range( 0, ss-S+1, +1 ):
-        if datas[ss-i] == datas[ee+i]: 
-            continue
-        else:
-            palindrome = False
-            break
+
+for length in range(N):
+    # 길이가 1부터 N까지의 팰린드롬을 순서대로 찾아 dp에 저장
+    for start in range(N):
+        end = start + length
+        if end >= N: break
             
-    if palindrome:
-        if S < ss: # 시작지점에서 더 긴 팰린드룸을 발견했다면 업데이트.
-            dp[s][e] = [1, S, E]
-        print( 1 )
-    else:
-        if ss-i+1 < ee+i-1: # 실패였다면 -> 바로 그 전까지는 팰린드롬 이라는 것.-> 업데이트.
-            dp[s][e] = [1, ss-i+1, ee+i-1]
-        print( 0 )
+        if start == end:
+            dp[start][end]=1
+            continue
+            
+        if start + 1 == end:
+            if datas[start] == datas[end]:
+                dp[start][end] = 1
+                continue
+            
+        if datas[start] == datas[end] and dp[start+1][end-1]:
+            # ex) 0 0 1 1 0 0 -> 맨 외각의 0, 0이 같고, dp[1][4]가 팰린드롬이라면, 해당 문자는 팰린드롬.
+            dp[start][end] = 1
+    
+M = int(input())
+for i in range(M):
+    S, E = map(int, sys.stdin.readline().split())
+    print(dp[S - 1][E - 1])
