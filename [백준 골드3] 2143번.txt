@@ -1,0 +1,40 @@
+# 2143번: 두 배열의 합
+def getRangeSumDict( data, length ):
+    rangeSumDict = {}
+
+    preSum = [0 for i in range(length)]
+    preSum[0] = data[0]
+    rangeSumDict[ preSum[0] ] = 1
+    for i in range(1, length):
+        preSum[i]= data[i] + preSum[i-1]
+        try:
+            rangeSumDict[ preSum[i] ] += 1
+        except:
+            rangeSumDict[ preSum[i] ] = 1
+    
+    for i in range( length ):
+        for j in range(i+1, length):
+            preSum[j] -= data[i]
+            try:
+                rangeSumDict[ preSum[j] ] += 1
+            except:
+                rangeSumDict[ preSum[j] ] = 1
+    return rangeSumDict
+#############################################
+T = int(input())
+ALen = int(input())
+A = list(map(int, input().split()))
+BLen = int(input())
+B = list(map(int, input().split()))
+
+adict = getRangeSumDict( A, ALen )
+bdict = getRangeSumDict( B, BLen )
+
+result = 0
+for a in adict.keys():
+    try:
+        result += bdict[ T-a ] * adict[a]
+    except:
+        pass
+
+print( result )
