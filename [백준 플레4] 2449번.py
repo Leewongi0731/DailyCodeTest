@@ -14,6 +14,18 @@ datas = reData
 N = len(datas)
 
 dp = [ [0]*N for i in range(N) ]
+
+# start / end 
+# 0,0
+# 0 1 -> 0 0 + 1 1
+# 1 2 -> 1 1 + 2 2
+# 0 2 -> 0 0 + 1 2
+#     -> 0 1 + 2 2
+# 2 3 -> 2 2 + 3 3
+# 1 3 -> 1 1 + 2 3
+#     -> 1 2 + 3 3
+#  ........
+# 이런식으로 DP값을 찾아야 함으로 아래와 같이 start/end를 탐색
 for end in range(N):
     for start in range( end-1, -1, -1 ):
         dp[start][end] = sys.maxsize
